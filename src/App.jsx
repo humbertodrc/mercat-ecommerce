@@ -6,6 +6,7 @@ import apiProducts from "./api";
 import "./App.css";
 import {CardProduct} from "./components/CardProduct";
 import {Layout} from "./components/Layout";
+import { Hero } from './components/Hero';
 
 const Container = styled.div`
 	display: grid;
@@ -43,6 +44,7 @@ function App() {
 
 	return (
 		<Layout>
+			<Hero />
 			<Container>
 				{load ? (
 					<>

@@ -97,7 +97,6 @@ export const CardProduct = ({item}) => {
 	const {name, image, type} = item;
 
 	const getPrice = () => {
-		// Numero al azar
 		const numero = Math.floor(Math.random() * (100 - 1)) + 100;
 		return numero;
 	};
