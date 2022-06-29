@@ -1,45 +1,57 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import {useSelector, useDispatch} from "react-redux";
+import {useEffect} from "react";
+import apiProducts from "./api";
+import "./App.css";
+import {
+	getDataProducts,
+	isLoading,
+} from "./redux/actions/shoppingCartActions";
 
 function App() {
-  const [count, setCount] = useState(0)
+	const state = useSelector((state) => state);
+	const dispatch = useDispatch();
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+	const {cart} = state;
+	const {
+		amiibo
+	} = cart.products;
+	console.log(amiibo);
+
+  console.log(cart);
+
+  const getPrice = () => {
+    // Numero al azar
+    const numero = Math.floor(Math.random() * (100 - 1)) + 100;
+    return numero;
+  }
+  
+
+	const getProductos = async () => {
+		dispatch(isLoading(true));
+		try {
+			const {data} = await apiProducts.get();
+			dispatch(getDataProducts(data));
+		} catch (error) {
+			console.log(error);
+		}
+		dispatch(isLoading(false));
+	};
+
+	useEffect(() => {
+		getProductos();
+	}, []);
+
+	return (
+		<div className="App">
+			{amiibo?.map((item, index) => (
+				<div key={index}>
+					<h1>{item.name}</h1>
+          <img src={item.image} alt={item.name} />
+          <p>${getPrice()},<small>00</small></p>
+				</div>
+			))}
+		</div>
+	);
 }
 
-export default App
+export default App;
