@@ -1,7 +1,7 @@
 import {useSelector, useDispatch} from "react-redux";
 import styled from "@emotion/styled";
 import Close from "../assets/img/cerrar.svg";
-import { addToCart, removeFromCart } from '../redux/actions/shoppingCartActions';
+import { addOneToCart, addToCart, removeFromCart } from '../redux/actions/shoppingCartActions';
 
 const ModalContainer = styled.div`
 	display: block;
@@ -74,7 +74,7 @@ export const CartModal = ({ handleCartModal }) => {
               <td>{item.name}</td>
               <Cell><button onClick={() => dispatch(removeFromCart(item.tail))}>-1</button></Cell>
               <Cell>{parseInt(item.quantity)}</Cell>
-              <Cell><button onClick={() => dispatch(addToCart(item.tail))}>+1</button></Cell>
+              <Cell><button onClick={() => dispatch(addOneToCart(item.tail))}>+1</button></Cell>
             </Row>
           ))}
         </tbody>

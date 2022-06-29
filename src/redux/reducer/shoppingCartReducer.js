@@ -1,4 +1,5 @@
 import {
+	ADD_ONE_TO_CART,
 	ADD_TO_CART,
 	CLEAR_CART,
 	GET_DATA_PRODUCTS,
@@ -30,7 +31,9 @@ export const shoppingCartReducer = (state = initalState, action) => {
 		}
 
 		case ADD_TO_CART: {
-			let newItem = state.products.amiibo.find((item) => item.tail === action.payload);
+			let newItem = state.products.amiibo.find(
+				(item) => item.tail === action.payload
+			);
 			let itemInCart = state.shoppingCart.find(
 				(item) => item.tail === newItem.tail
 			);
@@ -47,6 +50,19 @@ export const shoppingCartReducer = (state = initalState, action) => {
 						...state,
 						shoppingCart: [...state.shoppingCart, {...newItem, quantity: 1}],
 				  };
+		}
+
+		case ADD_ONE_TO_CART: {
+			return {
+				...state,
+				shoppingCart: state.shoppingCart.map((item) =>
+					item.tail === action.payload
+						? {...item, quantity: item.quantity + 1}
+						: item
+				),
+
+			}
+		
 		}
 
 		case REMOVE_ONE_FROM_CART: {
