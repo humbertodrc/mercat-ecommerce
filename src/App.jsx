@@ -1,30 +1,27 @@
-import {useSelector, useDispatch} from "react-redux";
 import {useEffect} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {getDataProducts, isLoading} from "./redux/actions/shoppingCartActions";
+import styled from "@emotion/styled";
 import apiProducts from "./api";
 import "./App.css";
-import {
-	getDataProducts,
-	isLoading,
-} from "./redux/actions/shoppingCartActions";
+import {CardProduct} from "./components/CardProduct";
+
+const Container = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-gap: 1rem;
+`;
 
 function App() {
 	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
 
 	const {cart} = state;
-	const {
-		amiibo
-	} = cart.products;
-	console.log(amiibo);
+	const {amiibo} = cart.products;
 
-  console.log(cart);
+	const {load} = cart;
 
-  const getPrice = () => {
-    // Numero al azar
-    const numero = Math.floor(Math.random() * (100 - 1)) + 100;
-    return numero;
-  }
-  
+	console.log(load);
 
 	const getProductos = async () => {
 		dispatch(isLoading(true));
@@ -42,15 +39,19 @@ function App() {
 	}, []);
 
 	return (
-		<div className="App">
-			{amiibo?.map((item, index) => (
-				<div key={index}>
-					<h1>{item.name}</h1>
-          <img src={item.image} alt={item.name} />
-          <p>${getPrice()},<small>00</small></p>
-				</div>
-			))}
-		</div>
+		<Container>
+			{load ? (
+        <>
+          <h1 style={{color:"white"}}>Cargando...</h1>
+        </>
+			) : (
+				<>
+					{amiibo?.map((item) => (
+						<CardProduct item={item} key={item.tail} />
+					))}
+				</>
+			)}
+		</Container>
 	);
 }
 
