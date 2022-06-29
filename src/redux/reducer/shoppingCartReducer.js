@@ -30,9 +30,9 @@ export const shoppingCartReducer = (state = initalState, action) => {
 		}
 
 		case ADD_TO_CART: {
-			let newItem = state.products.find((item) => item.id === action.payload);
+			let newItem = state.products.amiibo.find((item) => item.tail === action.payload);
 			let itemInCart = state.shoppingCart.find(
-				(item) => item.id === newItem.id
+				(item) => item.tail === newItem.tail
 			);
 			return itemInCart
 				? {
@@ -51,19 +51,19 @@ export const shoppingCartReducer = (state = initalState, action) => {
 
 		case REMOVE_ONE_FROM_CART: {
 			let deletedItem = state.shoppingCart.find(
-				(item) => item.id === action.payload
+				(item) => item.tail === action.payload
 			);
 			return deletedItem.quantity === 1
 				? {
 						...state,
 						shoppingCart: state.shoppingCart.filter(
-							(item) => item.id !== action.payload
+							(item) => item.tail !== action.payload
 						),
 				  }
 				: {
 						...state,
 						shoppingCart: state.shoppingCart.map((item) =>
-							item.id === action.payload
+							item.tail === action.payload
 								? {...item, quantity: item.quantity - 1}
 								: item
 						),

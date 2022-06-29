@@ -1,4 +1,7 @@
+import { useDispatch } from 'react-redux';
 import styled from "@emotion/styled";
+import { addToCart } from '../redux/actions/shoppingCartActions';
+import { useMemo } from 'react';
 
 const CardContainer = styled.div`
 	display: flex;
@@ -94,12 +97,17 @@ const Button = styled.button`
 `;
 
 export const CardProduct = ({item}) => {
-	const {name, image, type} = item;
+	const { name, image, type, tail } = item;
+	
+	const dispatch = useDispatch();
 
 	const getPrice = () => {
 		const numero = Math.floor(Math.random() * (100 - 1)) + 100;
 		return numero;
 	};
+	
+	// Memoriza el precio del producto
+	const price = useMemo(() => getPrice(), []);
 
 	return (
 		<CardContainer>
@@ -109,10 +117,10 @@ export const CardProduct = ({item}) => {
 				<CardBody>
 					<CardType>{type}</CardType>
 					<CardPrice>
-						${getPrice()},<small>00</small>
+						${price},<small>00</small>
 					</CardPrice>
 				</CardBody>
-				<Button>Add to Cart</Button>
+				<Button onClick={() => dispatch(addToCart(tail))}>Add to Cart</Button>
 			</CardDetail>
 		</CardContainer>
 	);
