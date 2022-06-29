@@ -31,8 +31,6 @@ const CardContainer = styled.div`
 `;
 
 const Image = styled.img`
-	width: 95%;
-	height: 180px;
 	object-fit: contain;
 	position: absolute;
 	top: 40%;
@@ -106,7 +104,7 @@ export const CardProduct = ({item}) => {
 
 	return (
 		<CardContainer>
-			<Image src={image} alt={item.name} />
+			<Image src={image} alt={item.name} width={150} height={210} />
 			<CardDetail>
 				<Title>{name}</Title>
 				<CardBody>
