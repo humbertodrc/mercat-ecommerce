@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import apiProducts from "./api";
 import "./App.css";
 import {CardProduct} from "./components/CardProduct";
+import {Layout} from "./components/Layout";
 
 const Container = styled.div`
 	display: grid;
@@ -12,7 +13,7 @@ const Container = styled.div`
 	grid-gap: 1rem;
 	padding: 40px;
 
-	@media (min-width: 992px){
+	@media (min-width: 992px) {
 		padding: 20px;
 	}
 `;
@@ -23,10 +24,7 @@ function App() {
 
 	const {cart} = state;
 	const {amiibo} = cart.products;
-
 	const {load} = cart;
-
-	console.log(load);
 
 	const getProductos = async () => {
 		dispatch(isLoading(true));
@@ -44,19 +42,21 @@ function App() {
 	}, []);
 
 	return (
-		<Container>
-			{load ? (
-        <>
-          <h1 style={{color:"white"}}>Cargando...</h1>
-        </>
-			) : (
-				<>
-					{amiibo?.map((item) => (
-						<CardProduct item={item} key={item.tail} />
-					))}
-				</>
-			)}
-		</Container>
+		<Layout>
+			<Container>
+				{load ? (
+					<>
+						<h1 style={{color: "white"}}>Cargando...</h1>
+					</>
+				) : (
+					<>
+						{amiibo?.map((item) => (
+							<CardProduct item={item} key={item.tail} />
+						))}
+					</>
+				)}
+			</Container>
+		</Layout>
 	);
 }
 
