@@ -29,6 +29,7 @@ const Title = styled.h1`
 	font-size: 2.5rem;
 	font-weight: bold;
 	text-align: center;
+	margin: 0;
 
 	span {
 		color: #ffc107;

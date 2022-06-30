@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {CartModal} from "./CartModal";
 import styled from "@emotion/styled";
 import Cart from "../assets/img/cart.svg";
@@ -61,25 +61,33 @@ const TextAmount = styled.p`
 
 export const Navbar = () => {
 	const [cartModal, setCartModal] = useState(false);
-	const [amount, setAmount] = useState(JSON.parse(localStorage.getItem("cart")).length);
+	const [amount, setAmount] = useState(
+		JSON.parse(localStorage.getItem("cart")).length
+	);
 
 	const state = useSelector((state) => state);
 	const {cart} = state;
 	const {shoppingCart} = cart;
 
 	const navigate = useNavigate();
+	const location = useLocation();
+	const urlActual = location.pathname;
 
 	const handleCartModal = () => {
+		if (urlActual === "/cart") {
+			setCartModal(false);
+			return;
+		}
 		setCartModal(!cartModal);
 	};
 
 	const upDateAmount = () => {
 		setAmount(JSON.parse(localStorage.getItem("cart")).length);
-	}
+	};
 
 	useEffect(() => {
 		upDateAmount();
-	}, [shoppingCart]);
+	}, [shoppingCart, cartModal]);
 
 	return (
 		<>
