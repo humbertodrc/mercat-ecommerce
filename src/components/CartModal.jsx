@@ -1,27 +1,21 @@
-import {useSelector, useDispatch} from "react-redux";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import { addProductCart, deleteOneProductCart } from '../utils/crudLocalStorage';
 import styled from "@emotion/styled";
 import Close from "../assets/img/cerrar.svg";
-import {
-	addOneToCart,
-	removeFromCart,
-} from "../redux/actions/shoppingCartActions";
-import { getPrice } from '../utils/getPrice';
-import { useMemo } from 'react';
 
 const ModalContainer = styled.div`
+	align-items: center;
+	background-color: rgb(0 0 0 / 0.92);
+	border: solid 1px #74717160;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	align-items: center;
+	padding: 10px;
 	position: absolute;
 	right: 0px;
 	top: 0px;
 	z-index: 99999;
-	background-color: rgb(0 0 0 / 0.92);
-	border: solid 1px #74717160;
-
-	padding: 10px;
 
 	@media (min-width: 768px) {
 		min-height: 600px;
@@ -32,23 +26,23 @@ const ModalContainer = styled.div`
 `;
 
 const CloseButton = styled.div`
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 20px;
 	height: 20px;
 	margin: 10px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 20px;
 `;
 
 const Table = styled.table`
-	width: 100%;
-	border-collapse: collapse;
-	border-spacing: 0;
-	border-radius: 5px;
 	background-color: rgb(0 0 0 / 0.92);
-	margin-top: 2rem;
+	border-collapse: collapse;
+	border-radius: 5px;
+	border-spacing: 0;
 	color: #fff;
+	margin-top: 2rem;
 	padding: 1rem;
+	width: 100%;
 `;
 
 const Row = styled.tr`
@@ -56,8 +50,8 @@ const Row = styled.tr`
 `;
 
 const Cell = styled.td`
-	text-align: center;
 	padding: 10px;
+	text-align: center;
 
 	@media (min-width: 768px) {
 		padding: 20px;
@@ -65,55 +59,62 @@ const Cell = styled.td`
 `;
 
 const ButtonContainer = styled.div`
-	width: 100%;
 	margin: 0 auto;
+	width: 100%;
 `;
 
 const Button = styled.button`
 	all: unset;
 	background-color: #d03030;
-	border: none;
 	border-radius: 5px;
+	border: none;
 	color: #fff;
-	padding: 15px 10px;
-	width: 95%;
-	text-align: center;
-	font-size: 1rem;
 	cursor: pointer;
+	font-size: 1rem;
+	padding: 15px 10px;
+	text-align: center;
+	width: 95%;
 `;
 
 const TotalContainer = styled.div`
+	align-items: center;
 	display: flex;
 	justify-content: flex-end;
-	align-items: center;
 	padding: 0.8rem;
 
 	h3 {
-		font-size: 1.5rem;
 		color: #fff;
+		font-size: 1.5rem;
 		font-weight: 700;
 	}
 
 	@media (min-width: 768px) {
 		padding: 1rem 2rem;
 	}
-`
+`;
 
 export const CartModal = ({handleCartModal}) => {
-	const state = useSelector((state) => state);
-	const dispatch = useDispatch();
-
-	const {cart} = state;
-	const {shoppingCart} = cart;
+	const [cartLocalStorage, setCartLocalStorage] = useState(
+		JSON.parse(localStorage.getItem("cart")) || []
+	);
 
 	const navigate = useNavigate();
 
 	const handleNavigate = () => {
 		navigate("/cart");
-		handleCartModal()
-	}
+		handleCartModal();
+	};
 
-	const price = useMemo(() => getPrice(), []);
+	const addQuantity = (id) => {
+		let updateProduct = addProductCart(id);
+		setCartLocalStorage(updateProduct);
+		}
+
+	const substQuantity = (id) => {
+		let updateProduct = deleteOneProductCart(id);
+		setCartLocalStorage(updateProduct);
+	};
+
 
 	return (
 		<ModalContainer>
@@ -130,26 +131,30 @@ export const CartModal = ({handleCartModal}) => {
 					</tr>
 				</thead>
 				<tbody>
-					{shoppingCart.map((item) => (
+					{cartLocalStorage.map((item) => (
 						<Row key={item.tail}>
 							<td>{item.name}</td>
 							<Cell>
-								<button onClick={() => dispatch(removeFromCart(item.tail))}>
+								<button onClick={() => substQuantity(item.tail)}>
 									-1
 								</button>
 							</Cell>
 							<Cell>{parseInt(item.quantity)}</Cell>
 							<Cell>
-								<button onClick={() => dispatch(addOneToCart(item.tail))}>
-									+1
-								</button>
+								<button onClick={() => addQuantity(item.tail)}>+1</button>
 							</Cell>
 						</Row>
 					))}
 				</tbody>
 			</Table>
 			<TotalContainer>
-				<h3>Total: {shoppingCart.reduce((acc, item) => acc + price * parseInt(item.quantity), 0)}</h3>
+				<h3>
+					Total:{" "}
+					{cartLocalStorage.reduce(
+						(acc, item) => acc + item.price * parseInt(item.quantity),
+						0
+					)}
+				</h3>
 			</TotalContainer>
 			<ButtonContainer>
 				<Button onClick={handleNavigate}>Checkout</Button>

@@ -1,30 +1,30 @@
+import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {CartModal} from "./CartModal";
 import styled from "@emotion/styled";
 import Cart from "../assets/img/cart.svg";
 import Logo from "../assets/img/logo-mario.png";
-import {useEffect, useState} from "react";
-import {CartModal} from "./CartModal";
-import {useNavigate} from "react-router-dom";
 
 const NavbarContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
 	align-items: center;
 	background-color: #232323;
+	display: flex;
+	justify-content: space-between;
 	padding: 0.8rem 1.5rem;
 	position: relative;
 `;
 
 const NavbarDetail = styled.div`
-	display: flex;
-	gap: 1.2rem;
 	align-items: center;
 	cursor: pointer;
+	display: flex;
+	gap: 1.2rem;
 `;
 
 const NavbarLogo = styled.div`
-	display: flex;
 	align-items: center;
+	display: flex;
 	justify-content: center;
 
 	h2 {
@@ -37,21 +37,17 @@ const NavbarLogo = styled.div`
 `;
 
 const CartConatiner = styled.div`
-	position: relative;
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	-ms-border-radius: 50%;
-	-o-border-radius: 50%;
-	background-color: rgba(255, 255, 255, 0.215);
-	display: flex;
-	justify-content: center;
 	align-items: center;
+	background-color: rgba(255, 255, 255, 0.215);
+	border-radius: 50%;
 	cursor: pointer;
-	transition: 0.5s ease-in-out;
+	display: flex;
+	height: 50px;
+	justify-content: center;
 	margin: 0 10px;
+	position: relative;
+	transition: 0.5s ease-in-out;
+	width: 50px;
 `;
 
 const TextAmount = styled.p`
@@ -59,16 +55,15 @@ const TextAmount = styled.p`
 	font-size: 1.2rem;
 	font-weight: bold;
 	position: absolute;
-	top: -25px;
 	right: 0px;
+	top: -25px;
 `;
 
 export const Navbar = () => {
 	const [cartModal, setCartModal] = useState(false);
-	const [amount, setAmount] = useState(0);
+	const [amount, setAmount] = useState(JSON.parse(localStorage.getItem("cart")).length);
 
 	const state = useSelector((state) => state);
-
 	const {cart} = state;
 	const {shoppingCart} = cart;
 
@@ -78,18 +73,12 @@ export const Navbar = () => {
 		setCartModal(!cartModal);
 	};
 
-	const getLocalStorage = () => {
-		if (localStorage.getItem("cart") === null) {
-			localStorage.setItem("cart", JSON.stringify([]));
-		} else {
-			const cart = JSON.parse(localStorage.getItem("cart")).length;
-			setAmount(cart);
-			console.log(cart);
-		}
-	};
+	const upDateAmount = () => {
+		setAmount(JSON.parse(localStorage.getItem("cart")).length);
+	}
 
 	useEffect(() => {
-		getLocalStorage();
+		upDateAmount();
 	}, [shoppingCart]);
 
 	return (

@@ -1,10 +1,6 @@
 import {
-	ADD_ONE_TO_CART,
 	ADD_TO_CART,
-	CLEAR_CART,
 	GET_DATA_PRODUCTS,
-	REMOVE_ALL_FROM_CART,
-	REMOVE_ONE_FROM_CART,
 	START_FETCHING,
 } from "../types";
 
@@ -15,10 +11,4 @@ export const getDataProducts = (data) => ({
 });
 
 export const addToCart = (id) => ({ type: ADD_TO_CART, payload: id });
-export const addOneToCart = (id) => ({ type: ADD_ONE_TO_CART, payload: id });
-export const removeFromCart = (id, all = false) =>
-	all
-		? {type: REMOVE_ALL_FROM_CART, payload: id}
-		: {type: REMOVE_ONE_FROM_CART, payload: id};
 
-export const clearCart = () => ({type: CLEAR_CART});

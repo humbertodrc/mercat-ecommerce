@@ -1,31 +1,32 @@
-import { useDispatch } from 'react-redux';
-import styled from "@emotion/styled";
-import { addToCart } from '../redux/actions/shoppingCartActions';
 import { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/actions/shoppingCartActions';
 import { getPrice } from '../utils/getPrice';
+import { addToCartLocalStorage } from '../utils/crudLocalStorage';
+import styled from "@emotion/styled";
 
 const CardContainer = styled.div`
+	align-items: center;
+	background-color: #232323;
+	border-radius: 20px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
 	height: 350px;
-	background-color: #232323;
+	justify-content: center;
 	position: relative;
-	border-radius: 20px;
+	width: 100%;
 
 	&:before {
+		background: #b198984d;
+		border-radius: 20px;
+		clip-path: circle(150px at 80% 20%);
 		content: "";
+		height: 100%;
+		left: 0;
 		position: absolute;
 		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: #b198984d;
-		clip-path: circle(150px at 80% 20%);
 		transition: 0.5s ease-in-out;
-		border-radius: 20px;
+		width: 100%;
 	}
 
 	&:hover:before {
@@ -35,21 +36,21 @@ const CardContainer = styled.div`
 `;
 
 const Image = styled.img`
+	margin-bottom: 1rem;
 	object-fit: contain;
 	position: absolute;
 	top: 40%;
 	transform: translateY(-60%);
 	z-index: 10000;
-	margin-bottom: 1rem;
 `;
 
 const CardDetail = styled.div`
-	position: absolute;
+	align-items: center;
 	bottom: 0;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: center;
+	position: absolute;
 `;
 
 const Title = styled.h3`
@@ -78,19 +79,19 @@ const CardPrice = styled.p`
 
 const Button = styled.button`
 	all: unset;
-	text-align: center;
 	background-color: #d03030;
-	color: #fff;
-	width: 160px;
-	border: none;
 	border-radius: 10px;
-	padding: 0.5rem 1rem;
+	border: none;
+	color: #fff;
+	cursor: pointer;
 	font-size: 1rem;
 	font-weight: bold;
-	cursor: pointer;
-	transition: 0.5s ease-in-out;
-	text-transform: uppercase;
 	margin: 0 auto 0.5rem;
+	padding: 0.5rem 1rem;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.5s ease-in-out;
+	width: 160px;
 
 	&:hover {
 		background-color: #d0303076;
@@ -102,33 +103,13 @@ export const CardProduct = ({item}) => {
 	
 	const dispatch = useDispatch();
 	
-	// Memoriza el precio del producto
 	const price = useMemo(() => getPrice(), []);
 
-	// Gurada en localStorage el producto
-	const addToCartLocalStorage = () => {
+	// Gurada en localStorage el producto y en el state el carrito
+	const saveCart = () => {
 		dispatch(addToCart(tail))
-		const cart = JSON.parse(
-			localStorage.getItem("cart") || "[]"
-		);
-		const item = {
-			name,
-			image,
-			type,
-			tail,
-			quantity : 1,
-		}
-		// Validar si el item ya existe en el carrito
-		const itemExist = cart.find(item => item.tail === tail);
-		if (!itemExist) {
-			cart.push(item);
-			localStorage.setItem("cart", JSON.stringify(cart));
-		} else {
-			itemExist.quantity++;
-			localStorage.setItem("cart", JSON.stringify(cart));
-		}
+		addToCartLocalStorage(name, tail, price);
 	}
-
 
 	return (
 		<CardContainer>
@@ -141,7 +122,7 @@ export const CardProduct = ({item}) => {
 						${price},<small>00</small>
 					</CardPrice>
 				</CardBody>
-				<Button onClick={addToCartLocalStorage}>Add to Cart</Button>
+				<Button onClick={saveCart}>Add to Cart</Button>
 			</CardDetail>
 		</CardContainer>
 	);
