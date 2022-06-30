@@ -8,6 +8,12 @@ import styled from "@emotion/styled";
 const CartContainer = styled.div`
 	background-color: #232323;
 	margin: 1rem;
+	border-radius: 20px;
+	padding: 10px;
+
+	@media (min-width: 768px) {
+		padding: 2rem;
+	}
 `;
 
 const Table = styled.table`
@@ -15,10 +21,11 @@ const Table = styled.table`
 	border-collapse: collapse;
 	border-spacing: 0;
 	border-radius: 5px;
-	background-color: rgb(0 0 0 / 0.92);
+	background-color: #232323;
 	margin-top: 2rem;
 	color: #fff;
 	padding: 1rem;
+	
 `;
 
 const Row = styled.tr`
@@ -28,11 +35,30 @@ const Row = styled.tr`
 const Cell = styled.td`
 	text-align: center;
 	padding: 10px;
+	font-size: 12px;
 
 	@media (min-width: 768px) {
 		padding: 20px;
+		font-size: 16px;
 	}
 `;
+
+const TotalContainer = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0.8rem;
+
+	h3 {
+		font-size: 1.5rem;
+		color: #fff;
+		font-weight: 700;
+	}
+
+	@media (min-width: 768px) {
+		padding: 1rem 2rem;
+	}
+`
 
 function Cart() {
 	const state = useSelector((state) => state);
@@ -75,6 +101,9 @@ function Cart() {
 					))}
 				</tbody>
 			</Table>
+			<TotalContainer>
+				<h3>Total: {shoppingCart.reduce((acc, item) => acc + 2 * parseInt(item.quantity), 0)}</h3>
+			</TotalContainer>
 		</CartContainer>
 	);
 }
