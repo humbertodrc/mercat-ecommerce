@@ -90,7 +90,7 @@ export const shoppingCartReducer = (state = initalState, action) => {
 			return {
 				...state,
 				shoppingCart: state.shoppingCart.filter(
-					(item) => item.id !== action.payload
+					(item) => item.tail !== action.payload
 				),
 			};
 		}

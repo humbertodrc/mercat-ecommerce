@@ -103,7 +103,7 @@ function Cart() {
 								</button>
 							</Cell>
 							<Cell>
-								<button onClick={() => dispatch(addOneToCart(item.tail))}>
+								<button onClick={() => dispatch(removeFromCart(item.tail, true))}>
 									Delete
 								</button>
 							</Cell>
