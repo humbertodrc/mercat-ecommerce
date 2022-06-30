@@ -3,7 +3,8 @@ import styled from "@emotion/styled";
 import Cart from "../assets/img/cart.svg";
 import Logo from "../assets/img/logo-mario.png";
 import {useState} from "react";
-import { CartModal } from './CartModal';
+import {CartModal} from "./CartModal";
+import {Link} from "react-router-dom";
 
 const NavbarContainer = styled.div`
 	display: flex;
@@ -71,32 +72,28 @@ export const Navbar = () => {
 
 	const handleCartModal = () => {
 		setCartModal(!cartModal);
-	}
+	};
 
 	return (
 		<>
 			<NavbarContainer>
 				<NavbarDetail>
 					<img src={Logo} alt="logo" width={50} height={50} />
-					<NavbarLogo>
-						<h2>E</h2>
-						<h3>commerce</h3>
-					</NavbarLogo>
+					<Link to="/">
+						<NavbarLogo>
+							<h2>E</h2>
+							<h3>commerce</h3>
+						</NavbarLogo>
+					</Link>
 				</NavbarDetail>
 				<CartConatiner>
 					<TextAmount>
 						{shoppingCart.length === 0 ? "" : shoppingCart.length}
 					</TextAmount>
-					<img
-						src={Cart}
-						alt="cart"
-						onClick={handleCartModal}
-					/>
+					<img src={Cart} alt="cart" onClick={handleCartModal} />
 				</CartConatiner>
 			</NavbarContainer>
-			{cartModal && (
-					<CartModal handleCartModal={handleCartModal} />
-				)}
+			{cartModal && <CartModal handleCartModal={handleCartModal} />}
 		</>
 	);
 };
