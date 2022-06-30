@@ -105,6 +105,31 @@ export const CardProduct = ({item}) => {
 	// Memoriza el precio del producto
 	const price = useMemo(() => getPrice(), []);
 
+	// Gurada en localStorage el producto
+	const addToCartLocalStorage = () => {
+		dispatch(addToCart(tail))
+		const cart = JSON.parse(
+			localStorage.getItem("cart") || "[]"
+		);
+		const item = {
+			name,
+			image,
+			type,
+			tail,
+			quantity : 1,
+		}
+		// Validar si el item ya existe en el carrito
+		const itemExist = cart.find(item => item.tail === tail);
+		if (!itemExist) {
+			cart.push(item);
+			localStorage.setItem("cart", JSON.stringify(cart));
+		} else {
+			itemExist.quantity++;
+			localStorage.setItem("cart", JSON.stringify(cart));
+		}
+	}
+
+
 	return (
 		<CardContainer>
 			<Image src={image} alt={item.name} width={150} height={210} />
@@ -116,7 +141,7 @@ export const CardProduct = ({item}) => {
 						${price},<small>00</small>
 					</CardPrice>
 				</CardBody>
-				<Button onClick={() => dispatch(addToCart(tail))}>Add to Cart</Button>
+				<Button onClick={addToCartLocalStorage}>Add to Cart</Button>
 			</CardDetail>
 		</CardContainer>
 	);

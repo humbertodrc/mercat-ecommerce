@@ -2,7 +2,7 @@ import {useSelector} from "react-redux";
 import styled from "@emotion/styled";
 import Cart from "../assets/img/cart.svg";
 import Logo from "../assets/img/logo-mario.png";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {CartModal} from "./CartModal";
 import {useNavigate} from "react-router-dom";
 
@@ -65,6 +65,7 @@ const TextAmount = styled.p`
 
 export const Navbar = () => {
 	const [cartModal, setCartModal] = useState(false);
+	const [amount, setAmount] = useState(0);
 
 	const state = useSelector((state) => state);
 
@@ -77,6 +78,20 @@ export const Navbar = () => {
 		setCartModal(!cartModal);
 	};
 
+	const getLocalStorage = () => {
+		if (localStorage.getItem("cart") === null) {
+			localStorage.setItem("cart", JSON.stringify([]));
+		} else {
+			const cart = JSON.parse(localStorage.getItem("cart")).length;
+			setAmount(cart);
+			console.log(cart);
+		}
+	};
+
+	useEffect(() => {
+		getLocalStorage();
+	}, [shoppingCart]);
+
 	return (
 		<>
 			<NavbarContainer>
@@ -88,9 +103,7 @@ export const Navbar = () => {
 					</NavbarLogo>
 				</NavbarDetail>
 				<CartConatiner>
-					<TextAmount>
-						{shoppingCart.length === 0 ? "" : shoppingCart.length}
-					</TextAmount>
+					<TextAmount>{amount === 0 ? "" : amount}</TextAmount>
 					<img src={Cart} alt="cart" onClick={handleCartModal} />
 				</CartConatiner>
 			</NavbarContainer>

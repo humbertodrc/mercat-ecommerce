@@ -41,7 +41,7 @@ export const shoppingCartReducer = (state = initalState, action) => {
 				? {
 						...state,
 						shoppingCart: state.shoppingCart.map((item) =>
-							item.id === newItem.id
+							item.tail === newItem.tail
 								? {...item, quantity: item.quantity + 1}
 								: item
 						),
