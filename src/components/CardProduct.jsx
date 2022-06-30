@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import styled from "@emotion/styled";
 import { addToCart } from '../redux/actions/shoppingCartActions';
 import { useMemo } from 'react';
+import { getPrice } from '../utils/getPrice';
 
 const CardContainer = styled.div`
 	display: flex;
@@ -100,11 +101,6 @@ export const CardProduct = ({item}) => {
 	const { name, image, type, tail } = item;
 	
 	const dispatch = useDispatch();
-
-	const getPrice = () => {
-		const numero = Math.floor(Math.random() * (100 - 1)) + 100;
-		return numero;
-	};
 	
 	// Memoriza el precio del producto
 	const price = useMemo(() => getPrice(), []);

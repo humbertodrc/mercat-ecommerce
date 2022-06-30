@@ -7,6 +7,7 @@ import {getDataProducts, isLoading} from "../redux/actions/shoppingCartActions";
 import apiProducts from "../api";
 import {CardProduct} from "../components/CardProduct";
 import { Hero } from '../components/Hero';
+import Spinner from '../components/Spinner';
 
 const Container = styled.div`
 	display: grid;
@@ -48,7 +49,7 @@ function Home() {
 			<Container>
 				{load ? (
 					<>
-						<h1 style={{color: "white"}}>Cargando...</h1>
+						<Spinner />
 					</>
 				) : (
 					<>

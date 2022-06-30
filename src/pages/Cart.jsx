@@ -4,6 +4,8 @@ import {
 	removeFromCart,
 } from "../redux/actions/shoppingCartActions";
 import styled from "@emotion/styled";
+import { getPrice } from '../utils/getPrice';
+import { useMemo } from 'react';
 
 const CartContainer = styled.div`
 	background-color: #232323;
@@ -65,9 +67,10 @@ function Cart() {
 	const dispatch = useDispatch();
 
 	const {cart} = state;
-	const {shoppingCart} = cart;
+	const { shoppingCart } = cart;
+	
+	const price = useMemo(() => getPrice(), []);
 
-	console.log(shoppingCart);
 
 	return (
 		<CartContainer>
@@ -75,9 +78,11 @@ function Cart() {
 				<thead>
 					<tr>
 						<th>Product</th>
-						<th>Delete</th>
+						<th>Price</th>
 						<th>Quantity</th>
 						<th>Add</th>
+						<th>Remove</th>
+						<th>Delete</th>
 						<th>Total</th>
 					</tr>
 				</thead>
@@ -85,24 +90,30 @@ function Cart() {
 					{shoppingCart.map((item) => (
 						<Row key={item.tail}>
 							<td>{item.name}</td>
+							<Cell>{price}</Cell>
+							<Cell>{parseInt(item.quantity)}</Cell>
 							<Cell>
 								<button onClick={() => dispatch(removeFromCart(item.tail))}>
 									-1
 								</button>
 							</Cell>
-							<Cell>{parseInt(item.quantity)}</Cell>
 							<Cell>
 								<button onClick={() => dispatch(addOneToCart(item.tail))}>
 									+1
 								</button>
 							</Cell>
-							<Cell>{2 * parseInt(item.quantity)}</Cell>
+							<Cell>
+								<button onClick={() => dispatch(addOneToCart(item.tail))}>
+									Delete
+								</button>
+							</Cell>
+							<Cell>{price * parseInt(item.quantity)}</Cell>
 						</Row>
 					))}
 				</tbody>
 			</Table>
 			<TotalContainer>
-				<h3>Total: {shoppingCart.reduce((acc, item) => acc + 2 * parseInt(item.quantity), 0)}</h3>
+				<h3>Total: {shoppingCart.reduce((acc, item) => acc + price * parseInt(item.quantity), 0)}</h3>
 			</TotalContainer>
 		</CartContainer>
 	);

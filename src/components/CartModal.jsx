@@ -6,6 +6,8 @@ import {
 	addOneToCart,
 	removeFromCart,
 } from "../redux/actions/shoppingCartActions";
+import { getPrice } from '../utils/getPrice';
+import { useMemo } from 'react';
 
 const ModalContainer = styled.div`
 	display: flex;
@@ -80,6 +82,23 @@ const Button = styled.button`
 	cursor: pointer;
 `;
 
+const TotalContainer = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0.8rem;
+
+	h3 {
+		font-size: 1.5rem;
+		color: #fff;
+		font-weight: 700;
+	}
+
+	@media (min-width: 768px) {
+		padding: 1rem 2rem;
+	}
+`
+
 export const CartModal = ({handleCartModal}) => {
 	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
@@ -94,6 +113,8 @@ export const CartModal = ({handleCartModal}) => {
 		handleCartModal()
 	}
 
+	const price = useMemo(() => getPrice(), []);
+
 	return (
 		<ModalContainer>
 			<CloseButton>
@@ -106,7 +127,6 @@ export const CartModal = ({handleCartModal}) => {
 						<th>Delete</th>
 						<th>Quantity</th>
 						<th>Add</th>
-						<th>Total</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -124,11 +144,13 @@ export const CartModal = ({handleCartModal}) => {
 									+1
 								</button>
 							</Cell>
-							<Cell>{2 * parseInt(item.quantity)}</Cell>
 						</Row>
 					))}
 				</tbody>
 			</Table>
+			<TotalContainer>
+				<h3>Total: {shoppingCart.reduce((acc, item) => acc + price * parseInt(item.quantity), 0)}</h3>
+			</TotalContainer>
 			<ButtonContainer>
 				<Button onClick={handleNavigate}>Checkout</Button>
 			</ButtonContainer>
