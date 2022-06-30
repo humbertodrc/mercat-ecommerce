@@ -62,7 +62,7 @@ const TextAmount = styled.p`
 export const Navbar = () => {
 	const [cartModal, setCartModal] = useState(false);
 	const [amount, setAmount] = useState(
-		JSON.parse(localStorage.getItem("cart")).length
+		0
 	);
 
 	const state = useSelector((state) => state);
@@ -82,6 +82,12 @@ export const Navbar = () => {
 	};
 
 	const upDateAmount = () => {
+		// Validar si no esta en localStorage
+		if (!localStorage.getItem("cart")) {
+			setAmount(0);
+			return;
+		}
+
 		setAmount(JSON.parse(localStorage.getItem("cart")).length);
 	};
 
