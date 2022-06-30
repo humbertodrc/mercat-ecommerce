@@ -4,7 +4,7 @@ import Cart from "../assets/img/cart.svg";
 import Logo from "../assets/img/logo-mario.png";
 import {useState} from "react";
 import {CartModal} from "./CartModal";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const NavbarContainer = styled.div`
 	display: flex;
@@ -19,6 +19,7 @@ const NavbarDetail = styled.div`
 	display: flex;
 	gap: 1.2rem;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const NavbarLogo = styled.div`
@@ -70,6 +71,8 @@ export const Navbar = () => {
 	const {cart} = state;
 	const {shoppingCart} = cart;
 
+	const navigate = useNavigate();
+
 	const handleCartModal = () => {
 		setCartModal(!cartModal);
 	};
@@ -79,12 +82,10 @@ export const Navbar = () => {
 			<NavbarContainer>
 				<NavbarDetail>
 					<img src={Logo} alt="logo" width={50} height={50} />
-					<Link to="/">
-						<NavbarLogo>
-							<h2>E</h2>
-							<h3>commerce</h3>
-						</NavbarLogo>
-					</Link>
+					<NavbarLogo onClick={() => navigate(`/`)}>
+						<h2>E</h2>
+						<h3>commerce</h3>
+					</NavbarLogo>
 				</NavbarDetail>
 				<CartConatiner>
 					<TextAmount>

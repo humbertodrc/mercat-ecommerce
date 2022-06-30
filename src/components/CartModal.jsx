@@ -1,4 +1,5 @@
 import {useSelector, useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import styled from "@emotion/styled";
 import Close from "../assets/img/cerrar.svg";
 import {
@@ -7,7 +8,10 @@ import {
 } from "../redux/actions/shoppingCartActions";
 
 const ModalContainer = styled.div`
-	display: block;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	position: absolute;
 	right: 0px;
 	top: 0px;
@@ -58,12 +62,37 @@ const Cell = styled.td`
 	}
 `;
 
+const ButtonContainer = styled.div`
+	width: 100%;
+	margin: 0 auto;
+`;
+
+const Button = styled.button`
+	all: unset;
+	background-color: #d03030;
+	border: none;
+	border-radius: 5px;
+	color: #fff;
+	padding: 15px 10px;
+	width: 95%;
+	text-align: center;
+	font-size: 1rem;
+	cursor: pointer;
+`;
+
 export const CartModal = ({handleCartModal}) => {
 	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
 
 	const {cart} = state;
 	const {shoppingCart} = cart;
+
+	const navigate = useNavigate();
+
+	const handleNavigate = () => {
+		navigate("/cart");
+		handleCartModal()
+	}
 
 	return (
 		<ModalContainer>
@@ -99,10 +128,10 @@ export const CartModal = ({handleCartModal}) => {
 						</Row>
 					))}
 				</tbody>
-      </Table>
-      <div>
-        
-      </div>
+			</Table>
+			<ButtonContainer>
+				<Button onClick={handleNavigate}>Checkout</Button>
+			</ButtonContainer>
 		</ModalContainer>
 	);
 };
