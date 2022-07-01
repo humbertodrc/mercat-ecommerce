@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import ImagenHero from "../assets/img/imagen-hero.png";
 
@@ -56,12 +57,15 @@ const Button = styled.button`
 `;
 
 export const Hero = () => {
+
+	const navigate = useNavigate();
+
 	return (
 		<HeroContainer>
 			<Title>
 				Super Flash Sale <span>50% Off</span>
 			</Title>
-			<Button>See More</Button>
+			<Button onClick={() => navigate(`/`)}>See More</Button>
 		</HeroContainer>
 	);
 };

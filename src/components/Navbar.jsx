@@ -99,7 +99,7 @@ export const Navbar = () => {
 		<>
 			<NavbarContainer>
 				<NavbarDetail>
-					<img src={Logo} alt="logo" width={50} height={50} />
+					<img src={Logo} alt="logo" width={50} height={50} onClick={() => navigate(`/`)}/>
 					<NavbarLogo onClick={() => navigate(`/`)}>
 						<h2>E</h2>
 						<h3>commerce</h3>
