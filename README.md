@@ -51,6 +51,4 @@ npm run dev
 
 ## Demo
 
-Insert gif or link to demo
-
 https://mercat-ecommerce-humberto.netlify.app/
